@@ -17,22 +17,32 @@ public class Sudoku {
     //Atributos
     private GrafoConColores resolver;
     private int[][] sudoku;
+    private int[][] auxInicio;
     private int N;
     //Metodos
 
-    public Sudoku(GrafoConColores resolver, int[][] sudoku, int N) {
-        this.resolver = resolver;
+    public Sudoku(int[][] sudoku) {
+        this.resolver = new GrafoConColores();
         this.sudoku = sudoku;
-        this.N = N;
+        this.N = sudoku.length;
     }
-
     
-    
+ 
     public Sudoku(int n){
         resolver = new GrafoConColores();
         sudoku = new int[n][n];
         N = n;
     }
+    
+    public void construirAuxInicial(){ 
+        auxInicio = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                auxInicio[i][j] = sudoku[i][j];
+            }
+        }
+    }
+    
     
     private void construirGrafoInicial( ){
 // sudoku es el nombre del atributo de Sudoku que contiene los números (vector bidimensional)
@@ -134,10 +144,6 @@ public class Sudoku {
         
     }
     
-    public void InformarValorInicial(){
-        
-    }
-    
     public void InformarValorCasilla(int f,int c){
         System.out.println(sudoku[f][c]);
     }
@@ -155,15 +161,29 @@ public class Sudoku {
             }
         System.out.println("|");
         }
+        System.out.println();
     }
     
     public void resolverSudoku(){
         construirGrafoInicial();
         resolver.colorear(N);
+        for (int i=0; i<N; i++){
+            for (int j=0; j<N; j++){
+	      sudoku[i][j] = this.resolver.getColor(i*N+j+1);
+            }
+        }
     }
-
-    private int valorInicial(int i, int j) {
-        return sudoku[i][j];
+    
+    public int valorInicial(int i, int j) {
+        return auxInicio[i][j];
+    }
+    
+    public void reset(){
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                sudoku[i][j] = auxInicio[i][j];
+            }
+        }
     }
     
 }

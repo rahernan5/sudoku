@@ -47,7 +47,11 @@ public class GrafoConColores<T> extends Grafo<T>{
     }
     
     public int informarColorVertice(T v){
-        return tablaColores.get(v);
+        if(tablaColores.containsKey(v)){
+                 return getColor(v);
+            }else{
+                return 0;
+            }
     }
     
     public void eliminarTodosColores(){
